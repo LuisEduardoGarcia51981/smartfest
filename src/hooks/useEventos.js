@@ -7,9 +7,11 @@ import React, { useEffect, useState } from 'react'
 const UseEventos=()=>{
     
     const [eventos,setEventos]=useState(null)
-
+    const agregarEvento=(evento)=>{
+        setEventos(prev => prev.push[evento])
+    }
     const fetchEventos=async()=>{
-        const response= await globalThis.fetch('http://192.168.100.4:3003/api/eventosUser?userId=643f12a09103566cb5e1981f',{
+        const response= await globalThis.fetch('http://192.168.0.154:3003/api/eventosUser?userId=234',{
             method: 'GET'
         })
         const json=await response.json()
@@ -27,7 +29,10 @@ const UseEventos=()=>{
     const eventosNodes=eventos==null
         ? []
         : eventos
-    return {eventos:eventosNodes}
+    let respuesta={eventos:eventosNodes,agregarEvento}
+    console.log("que paso")
+    console.log(respuesta)    
+    return respuesta
 }
 
 export default UseEventos

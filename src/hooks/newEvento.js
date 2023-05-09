@@ -12,7 +12,7 @@ const NewEvento=(data)=>{
             body: JSON.stringify(data)
         };
 
-        const response= await globalThis.fetch('http://192.168.100.4:3003/api/evento', requestOptions)
+        const response= await globalThis.fetch('http://192.168.0.154:3003/api/evento', requestOptions)
         const json=await response.json()
         setRespuesta(json)
     }   

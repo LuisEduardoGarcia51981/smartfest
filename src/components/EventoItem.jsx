@@ -10,7 +10,7 @@ Moment.locale('es');
 const EventoItemHeader=({flyer,titulo,descripcion,fecha_evento,horario_inicio,clasificacion,tipofiesta,activo})=>(                 
     <View style={{flexDirection:"row", paddingBottom:2}}>
         <View style={{paddingRight:10}}> 
-            <Image style={styles.image} source={{uri:'http://192.168.100.4:3003/img/'+flyer}} />    
+            <Image style={styles.image} source={{uri:'http://192.168.0.154:3003/img/'+flyer}} />    
                  
         </View>
         <View style={{flex:1, justifyContent:'center'}}>        

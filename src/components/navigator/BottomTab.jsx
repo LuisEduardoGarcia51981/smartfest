@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import EventoList from "../EventoList";
 import { Text,View} from 'react-native';
 import Newevento from "../Newevento"
+import Updevento from "../Updevento"
 import {Datos,Contexto} from '../Contexto'
 
 const Tab = createBottomTabNavigator();
@@ -22,7 +23,8 @@ const BottomTab =()=> {
         screenOptions={({route})=>({      
           //headerShown: false,
           tabBarButton: [
-            "Nuevo Evento",           
+            "Nuevo Evento",  
+            "Editar Evento"        
           ].includes(route.name)
             ? () => {
                 return null;
@@ -81,6 +83,7 @@ const BottomTab =()=> {
         />           
           <Tab.Screen name="Perfil" component={ProfileScreen} />   
           <Tab.Screen name="Nuevo Evento" component={Newevento} options={{tabBarVisible:false, headerShown: true ,  tabBarStyle:{ display: 'none' }}} />          
+          <Tab.Screen name="Editar Evento" component={Updevento} options={{tabBarVisible:false, headerShown: true ,  tabBarStyle:{ display: 'none' }}} />          
       </Tab.Navigator>   
       </Datos>   
   );

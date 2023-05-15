@@ -9,6 +9,7 @@ export const Datos  =({children})=>{
     const [textomodal, setTextomodal]=useState("")
     const [path_return, setPath_return]=useState("")
     const [actionFlatList, setActionFlatList]=useState(false)
+    const [actualizarFormUpdate, setActualizarFormUpdate]=useState(false)
     return ( 
         <Contexto.Provider value={{vermodal,setVermodal,textomodal, setTextomodal,path_return, setPath_return,actionFlatList, setActionFlatList}}>
             {children}

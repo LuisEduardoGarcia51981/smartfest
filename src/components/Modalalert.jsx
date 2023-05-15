@@ -1,9 +1,7 @@
 import React, {useContext} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { Contexto } from './Contexto';
 import { useNavigation } from '@react-navigation/native';
-
-
 const Modalalert = () => {  
     const {vermodal,setVermodal}=useContext(Contexto)
     const {textomodal}=useContext(Contexto)  
@@ -18,11 +16,9 @@ const Modalalert = () => {
     const onpressFunction=(props_state)=>{  
           
       setVermodal(props_state)     
-      if  (path_return!='error'){
-        console.log("antes de cambiarActionFlat: "+actionFlatList);
-        cambiarActionFlat
-        console.log("Otro intento: "+actionFlatList);
-        navigation.navigate(path_return)        
+      if  (path_return!='error'){        
+        cambiarActionFlat()        
+        navigation.navigate(path_return)            
       }           
     }
   
@@ -33,8 +29,7 @@ const Modalalert = () => {
           animationType="fade"
           transparent={true}
           visible= {vermodal==true || vermodal==false ? vermodal: false} 
-          onRequestClose={() => {
-            Alert.alert('Se ha cerrado modal.');
+          onRequestClose={() => {            
            
           }}>
 

@@ -4,19 +4,60 @@ import StyledText from './StyledText'
 import theme from "../theme.js";
 import Moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import buscarEvento from '../hooks/buscarEvento.js';
+
 Moment.locale('es');
 
+const EventoItemHeader=({_id,flyer,titulo,descripcion,fecha_evento,horario_inicio,clasificacion,tipofiesta,activo,redes_sociales,direccion})=>{             
+    //console.log(redes_sociales);
+    const linkface=redes_sociales[0].link;
+    const linktwitter= redes_sociales[1].link    
 
-const EventoItemHeader=({flyer,titulo,descripcion,fecha_evento,horario_inicio,clasificacion,tipofiesta,activo})=>(                 
+    const time_evento = new Date(horario_inicio);
+    const horas = time_evento.getHours().toString().padStart(2, '0');
+    const minutos = time_evento.getMinutes().toString().padStart(2, '0');
+    const segundos = time_evento.getSeconds().toString().padStart(2, '0');
+    const horario_inicio_up=horas+':'+minutos+':'+segundos
+    const reg_evento={
+            _id:_id,
+            flyer:flyer,
+            titulo:titulo,
+            descripcion:descripcion,        
+            fecha_evento:fecha_evento,
+            horario_inicio:horario_inicio_up,
+            clasificacion:clasificacion,
+            tipofiesta:tipofiesta,
+            activo:activo, 
+            direccion:direccion,  
+            facebook:linkface, 
+            twitter:linktwitter,           
+    }
+    const mongoDate = new Date(fecha_evento);
+    const year = mongoDate.getUTCFullYear();
+    const month = String(mongoDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(mongoDate.getUTCDate()).padStart(2, '0');
+    const dateEvento = `${year}-${month}-${day}`;    
+    
+    //const actualizarEvento=(props_event)=>{      
+         
+       // alert(props_event.titulo);
+       // alert(props_event.fecha_evento);
+        //alert(props.redes_sociales);
+        //console.log(props_event.redes_sociales)
+        //navigation.navigate('Editar Evento', { id_evento: })
+    //}
+    const navigation = useNavigation(); 
+    return (
     <View style={{flexDirection:"row", paddingBottom:2}}>
         <View style={{paddingRight:10}}> 
-            <Image style={styles.image} source={{uri:'http://192.168.0.154:3003/img/'+flyer}} />    
+            <Image style={styles.image} source={{uri:'http://192.168.2.118:3003/img/'+flyer}} />    
                  
         </View>
         <View style={{flex:1, justifyContent:'center'}}>        
             <StyledText fontWeight='bold' lines='1'>{titulo}</StyledText>
             <StyledText  color='secondary' lines='1'>{descripcion}</StyledText>
-            <StyledText style={styles.datetime}>{Moment(fecha_evento).format('dddd DD/MM/YYYY')} | {Moment(horario_inicio).format('h:mm:ss a')}</StyledText>
+            <StyledText style={styles.datetime}>{Moment(dateEvento).format('dddd DD/MM/YYYY')} | {Moment(horario_inicio).format('h:mm:ss a')}</StyledText>
             <StyledText fontWeight='boldgreen' lines='1'>Evento: {clasificacion} | Tipo: {tipofiesta}</StyledText> 
             <StyledText fontWeight='boldgreen' lines='1'><Icon name={activo===true ? "thumbs-up-outline" : "thumbs-down-outline"}></Icon> Activo </StyledText> 
             <View style={styles.view_icons}>    
@@ -33,7 +74,7 @@ const EventoItemHeader=({flyer,titulo,descripcion,fecha_evento,horario_inicio,cl
                                 size={20}                        
                                 style={styles.copyIcon}
                                 //style={{ justifyContent: 'flex-start' }}
-                                //onPress={() => navigation.navigate('Post')}
+                                onPress={() =>navigation.navigate('Editar Evento', { reg_evento })}
                     />
                     <Icon 
                                 name={'trash-outline'}
@@ -46,12 +87,16 @@ const EventoItemHeader=({flyer,titulo,descripcion,fecha_evento,horario_inicio,cl
         </View> 
         
     </View>
-)
-const EventoItem=(props)=> (    
+    );
+}
+const EventoItem=(props)=> {
+    //console.log("aca en VentoItem: ")
+    //console.log(props.redes_sociales[0]);
+    return (   
     <View key={props.id} style={styles.container} > 
         <EventoItemHeader {...props}/>                      
     </View>
-)
+)}
 const styles=StyleSheet.create({
     container:{
         padding:20,
@@ -106,3 +151,4 @@ const styles=StyleSheet.create({
 })
 
 export default EventoItem
+

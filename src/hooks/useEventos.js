@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext} from 'react'
+import {Contexto} from '../components/Contexto.jsx'
 //definimos el custom Hook, que realiza refactorizacion
 //mantiene el codigo mas limpio
 //Esto es especialmente común cuando tenemos componentes que llaman a una API para obtener un dato,
@@ -7,31 +8,26 @@ import React, { useEffect, useState } from 'react'
 const UseEventos=()=>{
     
     const [eventos,setEventos]=useState(null)
+    const {actionFlatList}=useContext(Contexto) 
     const agregarEvento=(evento)=>{
         setEventos(prev => prev.push[evento])
     }
     const fetchEventos=async()=>{
-        const response= await globalThis.fetch('http://192.168.0.154:3003/api/eventosUser?userId=234',{
+        const response= await globalThis.fetch('http://192.168.2.118:3003/api/eventosUser?userId=234',{
             method: 'GET'
         })
         const json=await response.json()
         //console.log(json.eventos)
         setEventos(json.eventos)
-        
+       
     }
     useEffect(()=>{
         fetchEventos()
-    },[])
-    console.log("inicio/n");
-    console.log(eventos)
-    console.log("final/n");
-
+    },[actionFlatList])        
     const eventosNodes=eventos==null
         ? []
         : eventos
-    let respuesta={eventos:eventosNodes,agregarEvento}
-    console.log("que paso")
-    console.log(respuesta)    
+    let respuesta={eventos:eventosNodes,agregarEvento} ;   
     return respuesta
 }
 

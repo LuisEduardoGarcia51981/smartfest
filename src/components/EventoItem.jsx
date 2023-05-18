@@ -6,11 +6,16 @@ import Moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import buscarEvento from '../hooks/buscarEvento.js';
-
+import {Contexto} from '../components/Contexto.jsx'
+import { useContext } from 'react';
+import EliminarEvento from './EliminarEvento';
+import {configuracion} from '../sistema/configuracion.js'
 Moment.locale('es');
 
 const EventoItemHeader=({_id,flyer,titulo,descripcion,fecha_evento,horario_inicio,clasificacion,tipofiesta,activo,redes_sociales,direccion})=>{             
     //console.log(redes_sociales);
+
+    
     const linkface=redes_sociales[0].link;
     const linktwitter= redes_sociales[1].link    
 
@@ -39,19 +44,26 @@ const EventoItemHeader=({_id,flyer,titulo,descripcion,fecha_evento,horario_inici
     const day = String(mongoDate.getUTCDate()).padStart(2, '0');
     const dateEvento = `${year}-${month}-${day}`;    
     
-    //const actualizarEvento=(props_event)=>{      
-         
-       // alert(props_event.titulo);
-       // alert(props_event.fecha_evento);
-        //alert(props.redes_sociales);
-        //console.log(props_event.redes_sociales)
-        //navigation.navigate('Editar Evento', { id_evento: })
-    //}
     const navigation = useNavigation(); 
+    //-------------------------------------------
+    //Codigo para la eliminacion de un evento:
+    const {setVermodalconfirm}=useContext(Contexto)
+    const {setTextomodalconfirm}=useContext(Contexto)
+    
+    const eliminarEvento = (id_evento)=>{
+        console.log("id_evento em EventoItem es: "+id_evento);
+        {setTextomodalconfirm("Seguro desea eliminar el evento?")}
+        {setVermodalconfirm(true)}
+       
+    }
+    //-------------------------------------------
+    
     return (
-    <View style={{flexDirection:"row", paddingBottom:2}}>
+        
+    <View style={{flexDirection:"row", paddingBottom:2}}>        
+         <View><EliminarEvento id_evento={_id}/></View>
         <View style={{paddingRight:10}}> 
-            <Image style={styles.image} source={{uri:'http://192.168.2.118:3003/img/'+flyer}} />    
+            <Image style={styles.image} source={{uri:configuracion.ipserver+':'+configuracion.puertoserver+'/img/'+flyer}} />    
                  
         </View>
         <View style={{flex:1, justifyContent:'center'}}>        
@@ -66,7 +78,7 @@ const EventoItemHeader=({_id,flyer,titulo,descripcion,fecha_evento,horario_inici
                                 name={'eye-outline'}
                                 size={20}                        
                                 //style={{ justifyContent: 'flex-start' }}
-                                //onPress={() => navigation.navigate('Post')}
+                                onPress={() =>navigation.navigate('Ver Evento', { reg_evento })}
                                 style={styles.copyIcon}
                     />
                     <Icon 
@@ -81,12 +93,13 @@ const EventoItemHeader=({_id,flyer,titulo,descripcion,fecha_evento,horario_inici
                                 size={20}  
                                 style={styles.copyIcon}                      
                                 //style={{ justifyContent: 'flex-start' }}
-                                //onPress={() => navigation.navigate('Post')}
+                                onPress={() =>eliminarEvento(_id)}                                   
                     />
             </View>
         </View> 
         
     </View>
+    
     );
 }
 const EventoItem=(props)=> {

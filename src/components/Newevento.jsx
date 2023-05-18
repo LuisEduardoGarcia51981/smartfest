@@ -8,6 +8,7 @@ import { Box, Button } from "@mui/material";
 import Modalalert from './Modalalert.jsx'
 import {Contexto} from './Contexto.jsx'
 import { useNavigation } from '@react-navigation/native';
+import {configuracion} from '../sistema/configuracion.js'
 const styles=StyleSheet.create({
     error:{
         color:'red',
@@ -62,7 +63,7 @@ function buildFormData(formData, data, parentKey) {
 export default function Newevento(){  
     
    
-    const {reset,register,formState:{errors},watch,handleSubmit, control}= useForm({
+    const {register,formState:{errors},watch,handleSubmit, control}= useForm({
         defaultValues:{
             titulo:'',            
         }
@@ -74,10 +75,10 @@ export default function Newevento(){
     const navigation = useNavigation();  
     const cancelarAction=()=>{
         navigation.navigate("Dashboard")   
-        reset()    
+           
     }
     const resetAction=()=>{        
-        reset()    
+           
     }
     const onSubmit= (data)=>{   
 
@@ -103,7 +104,7 @@ export default function Newevento(){
         let cad_redes = '[{ "red":"facebook" ,"link":"' + data.facebook+ '"},{"red":"twiter", "link":"' +  data.twitter + '" }]'
         form_data.append("redes_sociales", cad_redes)
         const fetchEventos=async()=>{    
-            const response= await globalThis.fetch('http://192.168.2.118:3003/api/evento', {                
+            const response= await globalThis.fetch(configuracion.ipserver+':'+configuracion.puertoserver+'/api/evento', {                
                 method: "POST",
                 body: form_data
             })  

@@ -7,7 +7,8 @@ import EventoList from "../EventoList";
 import { Text,View} from 'react-native';
 import Newevento from "../Newevento"
 import Updevento from "../Updevento"
-import {Datos,Contexto} from '../Contexto'
+import Verevento from "../Verevento"
+import {Datos} from '../Contexto'
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +25,8 @@ const BottomTab =()=> {
           //headerShown: false,
           tabBarButton: [
             "Nuevo Evento",  
-            "Editar Evento"        
+            "Editar Evento",     
+            "Ver Evento",           
           ].includes(route.name)
             ? () => {
                 return null;
@@ -84,6 +86,7 @@ const BottomTab =()=> {
           <Tab.Screen name="Perfil" component={ProfileScreen} />   
           <Tab.Screen name="Nuevo Evento" component={Newevento} options={{tabBarVisible:false, headerShown: true ,  tabBarStyle:{ display: 'none' }}} />          
           <Tab.Screen name="Editar Evento" component={Updevento} options={{tabBarVisible:false, headerShown: true ,  tabBarStyle:{ display: 'none' }}} />          
+          <Tab.Screen name="Ver Evento" component={Verevento} options={{tabBarVisible:false, headerShown: true ,  tabBarStyle:{ display: 'none' }}} />                    
       </Tab.Navigator>   
       </Datos>   
   );

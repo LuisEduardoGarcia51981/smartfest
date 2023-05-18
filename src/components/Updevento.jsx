@@ -8,6 +8,7 @@ import { Box, Button } from "@mui/material";
 import Modalalert from './Modalalert.jsx'
 import {Contexto} from './Contexto.jsx'
 import { useNavigation,useRoute } from '@react-navigation/native';
+import {configuracion} from '../sistema/configuracion.js'
 const styles=StyleSheet.create({
     error:{
         color:'red',
@@ -86,7 +87,7 @@ export default function Updevento(){
         form_data.append('titulo', data.titulo);                        
         form_data.append('id_usuario', "234");                                                                       
         const fetchEventos=async()=>{    
-            const response= await globalThis.fetch('http://192.168.2.118:3003/api/evento/'+id_evento, {                
+            const response= await globalThis.fetch(configuracion.ipserver+':'+configuracion.puertoserver+'/api/evento/'+id_evento, {                
                 method: 'PUT',
                 body: form_data
             })  

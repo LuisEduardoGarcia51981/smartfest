@@ -1,5 +1,5 @@
 import  {useState } from 'react'
-
+import {configuracion} from '../sistema/configuracion.js'
 
 
 const NewEvento=(data)=>{
@@ -12,7 +12,7 @@ const NewEvento=(data)=>{
             body: JSON.stringify(data)
         };
 
-        const response= await globalThis.fetch('http://192.168.2.118:3003/api/evento', requestOptions)
+        const response= await globalThis.fetch(configuracion.ipserver+':'+configuracion.puertoserver+'/api/evento', requestOptions)
         const json=await response.json()
         setRespuesta(json)
     }   

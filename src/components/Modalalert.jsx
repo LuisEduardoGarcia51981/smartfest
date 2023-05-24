@@ -6,19 +6,28 @@ const Modalalert = () => {
     const {vermodal,setVermodal}=useContext(Contexto)
     const {textomodal}=useContext(Contexto)  
     const {path_return}=useContext(Contexto)  
-    const {actionFlatList,setActionFlatList}=useContext(Contexto)  
-    
+    const {actionFlatList,setActionFlatList}=useContext(Contexto)      
+    const {setPage}=useContext(Contexto) //para actualizar los datos del flatlist
+    const {forzarpage,setForzarPage}=useContext(Contexto) //para actualizar los datos del flatlist
     const navigation = useNavigation();    
 
-    const cambiarActionFlat=()=>{
-      setActionFlatList(!actionFlatList)
+    const actionChangeFlat=()=>{
+      setActionFlatList(!actionFlatList)      
     }
+    const actionChangePage=()=>{
+      setPage(0)
+      setForzarPage(!forzarpage)      
+    }
+    
+
     const onpressFunction=(props_state)=>{  
           
       setVermodal(props_state)     
-      if  (path_return!='error'){        
-        cambiarActionFlat()        
-        navigation.navigate(path_return)            
+      if  (path_return!='error'){           
+        actionChangePage()  
+           
+        actionChangeFlat()        
+        navigation.navigate(path_return)               
       }           
     }
   
@@ -41,9 +50,7 @@ const Modalalert = () => {
                   style={[styles.buttonalert, styles.buttonClose]}
                   onPress={() => onpressFunction(false)}>
                   <Text style={styles.textStyle}>aceptar</Text>
-                </Pressable>
-                
-              
+                </Pressable>                              
             </View>
           </View>
         </Modal>        
@@ -94,8 +101,5 @@ const Modalalert = () => {
       marginBottom: 15,
       textAlign: 'center',
     },
-  });
-  //onPress={() => setModalVisible(!mostrarModal)}>
-  //setModalVisible(!mostrarModal);
-  //visible={mostrarModal}
+  });  
   export default Modalalert;

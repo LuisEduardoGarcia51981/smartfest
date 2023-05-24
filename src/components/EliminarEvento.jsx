@@ -1,75 +1,68 @@
-import React, {useContext,useState,useEffect} from 'react';
+import React, {useContext} from 'react';
 import {Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { Contexto } from './Contexto';
-import { useNavigation } from '@react-navigation/native';
-import { inline } from 'react-native-web/dist/cjs/exports/StyleSheet/compiler';
 import {configuracion} from '../sistema/configuracion.js'
+import Modalalert from './Modalalert.jsx'
+
 
 const EliminarEvento = ({id_evento}) => {  
-  
-    const {textomodalconfirm}=useContext(Contexto)  
-    const {path_return}=useContext(Contexto)  
-    const {actionFlatList,setActionFlatList}=useContext(Contexto)  
-    
-    const {vermodalconfirm, setVermodalconfirm}=useContext(Contexto)
 
+//--------------------------------------------------------------------------
+  //texto que visualiza solicitando confirmacion para eliminar, tambien muestra el modal
+    const {textomodalconfirm}=useContext(Contexto) 
+    const {vermodalconfirm, setVermodalconfirm}=useContext(Contexto)
+//--------------------------------------------------------------------------    
+//Si elimina, tiene que actualizar el flatlist de EventoList
+    const {actionFlatList,setActionFlatList}=useContext(Contexto)   
+    const {setPage}=useContext(Contexto) //para actualizar los datos del flatlist
+    const {forzarpage,setForzarPage}=useContext(Contexto) //para actualizar los datos del flatlist
+//--------------------------------------------------------------------------    
+//Para ver el modalalert para indicar que la eliminacion se realizo de forma exitosa   
     const {setVermodal}=useContext(Contexto)
     const {setTextomodal}=useContext(Contexto)
     const {setPath_return}=useContext(Contexto)
-
-
-    const [respuesta,setRespuesta] = useState("");
-    const navigation = useNavigation();    
-    console.log("El id del evento en EliminarEvento linea 18 es: ");
-    console.log(id_evento);
-    console.log(Object.keys(id_evento));
+//-------------------------------------------------------------------------- 
     
-      
-      const eliminarEvento=async()=>{        
+    
+    const eliminarEvento=async()=>{       
           const requestOptions = {
               method: 'DELETE',            
           };
           const response= await globalThis.fetch(configuracion.ipserver+':'+configuracion.puertoserver+"/api/evento/"+id_evento, requestOptions)
-          const json=await response.json()
-          setRespuesta(json)
-          if (response.status==200)     {  
+          if (response.status==200)     {              
             {setTextomodal("El evento se elimino exitosamente")}                                              
             {setVermodal(true)}                        
             {setPath_return("Dashboard")} 
           }
           else
-          {                
+          {                  
               {setTextomodal("Error: el evento no se pudo eliminar")}
               {setPath_return("error")}    
               {setVermodal(true)}  
           }    
       }            
-
-    const cambiarActionFlat=()=>{
+    //-------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------- 
+    const cambiarActionFlat=()=>{// me parece que lo ejecuta el modalalert.jsx
       setActionFlatList(!actionFlatList)
     }
-
-
-    const onpressCancelFunction=(props_state)=>{  
-      console.log("aca en cancellonpressFunction");          
+    const actionChangePage=()=>{// me parece que lo ejecuta el modalalert.jsx
+      setPage(0)
+      setForzarPage(!forzarpage)      
+    }
+    //-------------------------------------------------------------------------- 
+    // accion a ejecutar cuando se presiona el boton cancelar al solicitar la confirmacion de
+    //la eliminacion del evento
+    const onpressCancelFunction=(props_state)=>{        
       setVermodalconfirm(props_state)          
                  
     }
-
-    const onpressDeleteFunction=(props_state)=>{  
-      console.log("aca en onpressDeleteFunction");  
-      //useEffect(()=>{        
-        eliminarEvento();
-      //},[]) 
-               
-      //deleteEvento(id_evento);
-      console.log("por aca");
-      cambiarActionFlat(); 
-      console.log("Despues de action flat")
-      setVermodalconfirm(props_state)
-      console.log("ocultamos el modal")
-      
+    //-------------------------------------------------------------------------- 
+    const onpressDeleteFunction=(props_state)=>{          
+        setVermodalconfirm(props_state)        
+        eliminarEvento();                   
     }
+    //-------------------------------------------------------------------------- 
     return (      
       <View style={styles.centeredView}>
         <Modal
@@ -97,7 +90,8 @@ const EliminarEvento = ({id_evento}) => {
               </View>                                            
             </View>
           </View>
-        </Modal>        
+        </Modal>  
+        <Modalalert />      
       </View>     
     );
   };
@@ -149,8 +143,5 @@ const EliminarEvento = ({id_evento}) => {
       marginBottom: 15,
       textAlign: 'center',
     },
-  });
-  //onPress={() => setModalVisible(!mostrarModal)}>
-  //setModalVisible(!mostrarModal);
-  //visible={mostrarModal}
+  });  
   export default EliminarEvento;

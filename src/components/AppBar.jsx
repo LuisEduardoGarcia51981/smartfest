@@ -1,4 +1,4 @@
-import react from "react";
+
 import {View, StyleSheet, ScrollView} from 'react-native'
 import StyledText from "./StyledText";
 import Constants from "expo-constants";

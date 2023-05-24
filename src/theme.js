@@ -52,7 +52,16 @@ const theme={
         
 
     },
-    
+    singleTextHomeScreen: {
+        fontSize: 16,        
+        color:'#000000',
+        paddingTop:25,
+        paddingLeft:20,
+        paddingRight:20,
+        textAlign: 'justify',
+        fontWeight: 'bold',
+
+    },
       
 }
 

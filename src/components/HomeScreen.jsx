@@ -1,22 +1,14 @@
 
-//import Icon from 'react-native-vector-icons/Ionicons';
-      //<Icon name="american-football-outline" size={30} color="#900" /
-
-import React from 'react';
-import {StyleSheet,Text, View,Image,ScrollView,Dimensions} from 'react-native';
+import {StyleSheet,Text, View,Image} from 'react-native';
 import logo from '../../assets/logo.png';
-//import '../../css/Main.css';
 import theme from "../theme.js";
 
-var { height } = Dimensions.get('window');
-var box_count = 3;
-var box_height = height / box_count;
-const styles=StyleSheet.create({
-  /*container:{
-      backgroundColor:theme.appBar.primary,        
-      flexDirection:"row",
-      paddingTop: 10,
-  },*/ 
+{
+  //StyleSheet se utiliza para manipular y controlar estilos CSS de elementos HTML en tiempo de ejecución. 
+  //Permite cambiar o aplicar estilos dinámicamente a elementos HTML 
+}
+
+const styles=StyleSheet.create({ 
   lineStyle:{ 
     borderWidth: 0.05, 
     borderColor:'#e3e3e3', 
@@ -30,7 +22,7 @@ const styles=StyleSheet.create({
     backgroundColor:theme.appBar.primary,   
     
   },
-
+//Los box me permiten dividir la pantalla en 3 layouts: box1, box2 box 3
   box1: {
     
     backgroundColor: '#FFFFFF',
@@ -41,14 +33,13 @@ const styles=StyleSheet.create({
   },
   box2: {  
     flex:1,
-    backgroundColor: '#6fa7b6',       
-    //justifyContent: 'center', //Centered horizontally
+    backgroundColor: '#6fa7b6',           
     alignItems: 'center', //Centered vertically
     paddingTop: 10,
 
   },
   box3: {   
-    flex: 10,       
+    flex: 10,                 
     backgroundColor: '#b2c7cc',        
     alignContent:'center',
     alignItems: 'center',
@@ -57,11 +48,7 @@ const styles=StyleSheet.create({
 })
 
 const HomeScreen = () => (
-
  
-
-  //<View style={{ justifyContent: 'center', alignItems: 'center'}}>
-  //<Image style = {theme.style_logo} source={logo} resizeMethod = "contain"/>
   <View style={styles.container}>
 
         <View style={[styles.box1]}>
@@ -78,10 +65,10 @@ const HomeScreen = () => (
             </Text>
         </View>        
         <View style={[ styles.box3]}>
-            <Text style={theme.singleText}>
+            <Text style={theme.singleTextHomeScreen} >
             SmartFest, fiestas inteligentes,  le permite organizar y publicitar cualquier tipo de evento por  la web oficial.
            </Text>
-           <Text style={theme.singleText}>
+           <Text style={theme.singleTextHomeScreen}>
             Organizá y publicá tu fiesta como quieras!!
              
             </Text>

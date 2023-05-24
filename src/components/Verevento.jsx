@@ -1,10 +1,11 @@
+import {useState,useEffect,useRef,useContext  } from 'react'
 import { View,Text,StyleSheet,ScrollView ,Image,} from "react-native";
 import "../css/styleforms.css"
 import { Box } from "@mui/material";
 import { useNavigation,useRoute } from '@react-navigation/native';
-import StyledText from './StyledText'
 import Moment from 'moment';
 import {configuracion} from '../sistema/configuracion.js'
+import {Contexto} from '../components/Contexto.jsx'
 Moment.locale('es');
 
 const styles=StyleSheet.create({
@@ -29,7 +30,7 @@ const styles=StyleSheet.create({
     },
     titulo: {
         color: 'black',        
-        paddingBottom: 2,
+        paddingBottom: 1,
         paddingLeft:0,
         paddingRight:10,            
         alignSelf: 'flex-start',        
@@ -44,30 +45,76 @@ const styles=StyleSheet.create({
         marginBottom:10,
         marginRight:8
     },
+    elemItemImg: {        
+        marginBottom:10,
+        marginRight:8,
+        borderWidth: 1,
+        borderColor:"#D8D8D8",
+        borderRadius:5
+    },
+    
 })
 
 export default function Verevento(){               
 
+    
+//--------------------------------------------------------------------------
+//recupero el registro completo
     const route = useRoute();
     const registro_evento = route.params.reg_evento;
-    
-    const id_evento=registro_evento._id;
+//--------------------------------------------------------------------------
     const navigation = useNavigation();  
+//--------------------------------------------------------------------------
+    const {viewport,setViewPort}=useContext(Contexto) //para ir al inicio del componente que muestra la view del evento: Verevento       
+//--------------------------------------------------------------------------
+//Cuando se presiona el boton "Volver", vuelve al Dashboard definida en BottomTab.jsx
+// del componente EventoList
     const aceptarAction=()=>{
-        navigation.navigate("Dashboard")   
-        //reset()    
-    }   
+        navigation.navigate("Dashboard")  
+        setViewPort(false)                
+    }               
+//--------------------------------------------------------------------------
     const flyer=registro_evento.flyer;
-    
+ //--------------------------------------------------------------------------   
     const mongoDate = new Date(registro_evento.fecha_evento);
     const year = mongoDate.getUTCFullYear();
     const month = String(mongoDate.getUTCMonth() + 1).padStart(2, '0');
     const day = String(mongoDate.getUTCDate()).padStart(2, '0');
     const dateEvento = `${year}-${month}-${day}`;   
-        
+
+//--------------------------------------------------------------------------
+    //Para verificar si la imagen existe:  
+    const [imagen,setImagen]=useState(null);
+    const imageUrl = configuracion.ipserver+':'+configuracion.puertoserver+'/img/'; 
+    
+    const evaluarImagen=()=>{            
+        let  imagenfinal=""
+        Image.getSize(imageUrl+flyer, (width, height) => {
+            imagenfinal=imageUrl+flyer
+            setImagen(imagenfinal)           
+        }, (error) => {            
+            imagenfinal=configuracion.ipserver+':'+configuracion.puertoserver+'/assets/photos/unknown.jpg'
+            setImagen(imagenfinal)            
+        });        
+    }
+    useEffect(()=>{         
+        evaluarImagen()        
+    },[registro_evento])
+    //Fin del codigo para verificar si la imagen existe
+//--------------------------------------------------------------------------
+//Para ir al inicio del componente, hace un scroll al principio
+    const scrollViewRef = useRef();
+
+  useEffect(() => { 
+        if (viewport){
+            scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: false });
+            
+        }    
+  }, [viewport]);
+//--------------------------------------------------------------------------
     return (  
                       
-            <ScrollView >    
+            <ScrollView  ref={scrollViewRef}>    
                      
                 <Box sx={{ p: 2 }}>
                    
@@ -96,10 +143,12 @@ export default function Verevento(){
                     </View>                    
                     <View style={styles.elemItem}>                        
                             <Text lines='1' style={styles.titulo}>Flyer: </Text> 
-                            <Image
-                                source={{uri:configuracion.ipserver+':'+configuracion.puertoserver+'/img/'+flyer}}
+                            <View style={styles.elemItemImg}> 
+                            <Image                            
+                                source={{uri:imagen}}
                                 style={styles.image}                            
-                            />                          
+                            /> 
+                            </View>                           
                     </View>                 
                     <View style={styles.elemItem}>
                         <Text lines='1' style={styles.titulo}>Facebook: </Text> 
